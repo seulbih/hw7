@@ -16,7 +16,7 @@
 /* 필요한 헤더파일 추가 if necessary */
 
 
-typedef struct Node {
+typedef struct Node { //노드 구조체 생성, 키, 왼쪽링크, 오른쪽 링크
 	int key;
 	struct Node* llink;
 	struct Node* rlink;
@@ -121,19 +121,38 @@ int main()
 }
 
 
-int initialize(headNode** h) {
+int initialize(headNode** h) { //이중포인터로 받음
+	if(*h != NULL) //h가 NULL이 아니면 freeList호출하여 메모리 해제
+			freeList(*h);//freeList는 싱글포인터 받음
+
+		/* headNode에 대한 메모리를 할당하여 리턴 */
+		headNode* temp = (headNode*)malloc(sizeof(headNode));
+		temp->first = NULL;
+		return temp;
 
 	return 1;
 }
 
 int freeList(headNode* h){
+	/* h와 연결된 listNode 메모리 해제
+		 * headNode도 해제되어야 함.
+		 */
+		listNode* p = h->first;
+
+		listNode* prev = NULL;
+		while(p != NULL) {
+			prev = p;
+			p = p->link;
+			free(prev);
+		}
+		free(h);
 	return 0;
 }
 
 
-void printList(headNode* h) {
+void printList(headNode* h) { //싱글포인터 h
 	int i = 0;
-	listNode* p;
+	listNode* p; //싱글포인터 p 추가
 
 	printf("\n---PRINT\n");
 
