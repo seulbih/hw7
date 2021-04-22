@@ -69,6 +69,7 @@ int main()
 		printf("----------------------------------------------------------------\n");
 
 		printf("Command = ");
+		fflush(stdout);
 		scanf(" %c", &command);
 
 		switch(command) {
@@ -80,16 +81,19 @@ int main()
 			break;
 		case 'i': case 'I':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key);
 			insertNode(headnode, key);
 			break;
 		case 'd': case 'D':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key);
 			deleteNode(headnode, key);
 			break;
 		case 'n': case 'N':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key);
 			insertLast(headnode, key);
 			break;
@@ -98,6 +102,7 @@ int main()
 			break;
 		case 'f': case 'F':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key);
 			insertFirst(headnode, key);
 			break;
@@ -274,21 +279,26 @@ int deleteFirst(headNode* h) {
  */
 int invertList(headNode* h) {
 
-	listNode *temp, *tail;
 	if(h==NULL){
 		printf("Linked List is empty!!!!!");
 		return 0;
 	}
-	if(h->first ==NULL){ //노드가 하나뿐일 때
-		return h;
+
+	listNode *temp, *p, *tail;
+	temp=h;
+	tail=temp;
+	p=h->first;
+
+	if(temp->rlink ==NULL){ //노드가 하나뿐일 때
+		return h; //그대로 리턴
 	}
 
-	temp=h->first;
-	while(temp->rlink != NULL){ //노드 두개 이상일 때
-		temp=temp->rlink; //리스트 끝까지 접군
-	}
-	if(temp->rlink=NULL{
 
+	while(p != NULL){ //노드 두개 이상일 때
+		temp=p->rlink;
+		p->rlink=p->llink;
+		p->llink=temp;
+		p=p->rlink;
 	}
 
 
