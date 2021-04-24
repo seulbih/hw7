@@ -169,20 +169,6 @@ void printList(headNode* h) { //싱글포인터 h
 	}
 
 	printf("  items = %d\n", i);
-
-	//삭제하기
-	printf("\n---checking addresses of links\n");
-	printf("-------------------------------\n");
-	printf("head node:  [rlink]=%p\n", h->first);
-
-	i = 0;
-	p = h->first;
-	while(p != NULL) {
-		printf("[ [%d]=%d ] [llink]=%p, [node]=%p, [rlink]=%p\n", i, p->key, p->llink, p, p->rlink);
-		p = p->rlink;
-		i++;
-	}
-
 }
 
 
