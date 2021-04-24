@@ -169,6 +169,20 @@ void printList(headNode* h) { //싱글포인터 h
 	}
 
 	printf("  items = %d\n", i);
+
+	//삭제하기
+	printf("\n---checking addresses of links\n");
+	printf("-------------------------------\n");
+	printf("head node:  [rlink]=%p\n", h->first);
+
+	i = 0;
+	p = h->first;
+	while(p != NULL) {
+		printf("[ [%d]=%d ] [llink]=%p, [node]=%p, [rlink]=%p\n", i, p->key, p->llink, p, p->rlink);
+		p = p->rlink;
+		i++;
+	}
+
 }
 
 
@@ -276,65 +290,20 @@ int invertList(headNode* h) {
 		printf("Linked List is empty!!!!!\n");
 		return 0;
 	}
-
-	/*listNode *temp, *current;
-	current = h->first;
-	    while(current != NULL)
-	    {
-
-	        temp = current->rlink;
-	        current->rlink = current->llink;
-	        current->llink = temp;
-
-
-	        current = temp;
-	    }
-	    */
-
-
 	listNode *temp, *p;
-		temp=NULL;
 		p=h->first;
-
+		if(p->rlink==NULL){ //노드가 하나인 경우
+			return 0;
+		}
 	while(p != NULL){
 		temp =p->llink;
 		p->llink=p->rlink;
 		p->rlink=temp;
 		p=p->llink;
 	}
+	temp=temp->llink;
+	h->first=temp;
 
-	if(temp !=NULL){
-			h->first=temp->llink;
-	}
-
-	/*listNode *temp, *p;
-	if(temp->rlink ==NULL){ //노드가 하나뿐일 때
-		return h; //그대로 리턴
-	}
-
-
-	while(p != NULL){ //노드 두개 이상일 때
-		temp=p->rlink;
-		p->rlink=p->llink;
-		p->llink=temp;
-		p=p->rlink;
-	}*/
-
-
-	/*listNode *p, *q, *r;
-
-		p=h->first;
-		q=NULL;
-		while(p !=NULL){
-			r = q;
-			q = p;
-			p = p->rlink;
-			q->rlink = r;
-		}
-		h->first=q;
-		return h;*/
-
-	return 0;
 }
 
 
