@@ -126,15 +126,13 @@ int main()
 }
 
 
-int initialize(headNode** h) { //이중포인터로 받음
-	if(*h != NULL) //h가 가리키고 있는 곳이 NULL이 아니면 freeList호출하여 메모리 해제
-			freeList(*h);//freeList는 싱글포인터 받음
+int initialize(headNode** h) { //이중포인터로 받음, call by refence
+	if(*h != NULL) //h->first가 NULL이 아니면 freeList호출하여 메모리 해제
+			freeList(*h);
 
-		/* headNode에 대한 메모리를 할당하여 리턴 */
-		headNode* temp = (headNode*)malloc(sizeof(headNode));
-		temp->first = NULL;
-		*h=temp->first; //h가 가리키고 있는 곳의 값=temp->first로 설정
-
+	headNode* temp = (headNode*)malloc(sizeof(headNode)); //새로운 노드 할당하여 h가 가리키도록 함
+	temp->first = NULL;
+	(*h)=temp;
 	return 1;
 }
 
@@ -142,15 +140,7 @@ int freeList(headNode* h){
 	/* h와 연결된 listNode 메모리 해제
 		 * headNode도 해제되어야 함.
 		 */
-		listNode* p = h->first;
 
-		listNode* prev = NULL;
-		while(p != NULL) {
-			prev = p;
-			p = p->rlink;
-			free(prev);
-		}
-		free(h);
 	return 0;
 }
 
@@ -242,13 +232,12 @@ int deleteLast(headNode* h) {
  */
 int insertFirst(headNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
+	listNode* node = (listNode*)malloc(sizeof(listNode)); //새로운 노드 생성
 
-	node->llink = NULL;
-	node->rlink = h->first;
-	h->first = node;
-
+	node->key = key; //새로운 노드에 key값 넣어줌
+	node->llink = h;
+	node->rlink=h->first;
+	h->first = node; //헤드노드에 연결
 
 	return 0;
 }
@@ -279,7 +268,7 @@ int deleteFirst(headNode* h) {
  */
 int invertList(headNode* h) {
 
-	if(h==NULL){
+	/*if(h==NULL){
 		printf("Linked List is empty!!!!!");
 		return 0;
 	}
@@ -299,7 +288,7 @@ int invertList(headNode* h) {
 		p->rlink=p->llink;
 		p->llink=temp;
 		p=p->rlink;
-	}
+	}*/
 
 
 	/*listNode *p, *q, *r;
@@ -324,7 +313,9 @@ int invertList(headNode* h) {
 int insertNode(headNode* h, int key) {
 	if( h->first==NULL){ //공백리스트인경우
 			insertFirst(h,key);
+			return 0;
 		}
+
 	listNode* node = (listNode*)malloc(sizeof(listNode));
 	listNode* temp = (listNode*)malloc(sizeof(listNode)); //임시노드 생성
 	node->key = key;
@@ -361,7 +352,7 @@ int insertNode(headNode* h, int key) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(headNode* h, int key) {
-	if(h->first==NULL){
+	if(h==NULL){
 				printf("Linked List is empty!!!!!");
 				return 0;
 			}
@@ -372,15 +363,15 @@ int deleteNode(headNode* h, int key) {
 		if(temp->key == key){ //첫번 째 노드가 key일 때
 			deleteFirst(h);
 		}
-		temp=temp->rlink;
+
 		while(temp !=NULL){ //노드검색
+			temp=temp->rlink; //한칸씩 옮김
 			if(temp->key == key){
 				temp->llink->rlink=temp->rlink; //앞뒤 노드 서로 연결
 				temp->rlink->llink=temp->llink;
 				free(temp);
 				return 0;
 			}
-		temp=temp->rlink; //한칸씩 옮김
 		}
 
 		if(temp==NULL){//key값이 노드에 없는 경우
