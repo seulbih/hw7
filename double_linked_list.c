@@ -292,17 +292,17 @@ int invertList(headNode* h) {
 	}
 	listNode *temp, *p;
 		p=h->first;
-		if(p->rlink==NULL){ //노드가 하나인 경우
+		if(p->rlink==NULL){ //노드가 하나인 경우 그냥 리턴
 			return 0;
 		}
-	while(p != NULL){
+	while(p != NULL){ //순회하며 링크 변경
 		temp =p->llink;
 		p->llink=p->rlink;
 		p->rlink=temp;
 		p=p->llink;
 	}
 	temp=temp->llink;
-	h->first=temp;
+	h->first=temp; //헤드와 temp연결
 
 }
 
